@@ -806,6 +806,12 @@
 		const validations = validatePhotos(st.files || []);
 		const isReadOnly = st.estado === 'pendiente_revision' || st.estado === 'medido';
 		
+		// Determinar rango según clasificación
+		const esNAP = it.clasificacion && it.clasificacion.toUpperCase().includes('NAP');
+		const rangoTexto = esNAP ? '-3.50 a 5.00' : '-23.50 a 5.00';
+		const ejemploValor = esNAP ? '-2.45' : '-22.45';
+		const tipoEquipo = esNAP ? '(NAP)' : '(CDO)';
+		
 		container.innerHTML = `
 			<div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
 				<div>
@@ -851,8 +857,8 @@
 		<!-- Valor de medición -->
 		<div class="form-group">
 			<label>Valor de medición:</label>
-			<input id="valorMedicion-${it.id}" type="text" placeholder="Ej: -22.45" maxlength="6" value="${st.valor_medicion || ''}" ${isReadOnly ? 'readonly' : ''} style="font-family: monospace;" />
-			<small class="small" style="color:var(--muted);display:block;margin-top:4px;">Formato: -23.50 a 5.00 (ej: -22.45)</small>
+			<input id="valorMedicion-${it.id}" type="text" placeholder="Ej: ${ejemploValor}" maxlength="6" value="${st.valor_medicion || ''}" ${isReadOnly ? 'readonly' : ''} style="font-family: monospace;" />
+			<small class="small" style="color:var(--muted);display:block;margin-top:4px;">Formato ${tipoEquipo}: ${rangoTexto} (ej: ${ejemploValor})</small>
 		</div>
 			
 			<!-- Acciones -->
